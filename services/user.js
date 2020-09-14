@@ -197,7 +197,7 @@ module.exports = {
   getOpenInfo: async (req) => {
     const { code } = req.body;
     const result = { status: 404, data: { code: -1 } };
-    if (!account || !wxId) {
+    if (!code) {
       result.data.code = 3001;
       result.data.msg = '缺少code'
       return result;

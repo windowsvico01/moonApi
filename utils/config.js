@@ -5,7 +5,7 @@ module.exports = {
       user: 'root',
     },
     proConfig: {
-      password: '104Yangpu',
+      password: '104yangpu',
       port: '3306',
       database: 'moonApi'
     },

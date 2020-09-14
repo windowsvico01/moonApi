@@ -212,6 +212,7 @@ module.exports = {
     result.status = 200;
     result.data.code = 1000;
     result.data.data = openInfo.data;
+    console.log(result);
     return result;
   }
 } 

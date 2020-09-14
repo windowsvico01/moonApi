@@ -1,7 +1,7 @@
 
 const db = require('../utils/db');
 const jwt = require('jsonwebtoken');
-const { tokenConfig } = require('../utils/config');
+const request = require('request');
 const isInt = (str) => {
   if (!str) return false;
   console.log(str + '----dasdadasdadasdadasdas')
@@ -14,6 +14,18 @@ class Base {
     this.state = {
       from: 'base',
     }
+  }
+  async requestOpenInfo (code) {
+    return new Promise(function(resolve, reject) {
+      request(`https://api.weixin.qq.com/sns/jscode2session?appid=wx30ba2c0a7c24d48f&secret=0237042dce1141ff98bebcad08aaaa3c&js_code=${code}&grant_type=authorization_code`,
+      function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          console.log(body) // 请求成功的处理逻辑
+          resolve({ code: 1000, data: body });
+        }
+        reject({ code: 3001})
+      });
+    })
   }
   /**
    * @type default: 'AND'  |  'OR'

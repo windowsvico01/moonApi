@@ -20,9 +20,11 @@
     "js-base64": "^3.4.5",
     "js-sha1": "^0.6.0",
     "jsonwebtoken": "^8.5.1",
+    "mockjs": "^1.1.0",
     "moment": "^2.27.0",
     "mysql": "^2.18.1",
     "qcloud-cos-sts": "^3.0.2",
+    "request": "^2.88.2",
     "socket.io": "^2.3.0"
   }
 }

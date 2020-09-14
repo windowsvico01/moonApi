@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 const moment = require('moment');
-const hash1 = require('hash.js')
+const hash1 = require('hash.js');
+const { requestInfo } = require('../utils/tools');
 const BaseUser = require('../models/baseUser');
 const baseUser = new BaseUser();
 const Couple = require('./couple');
@@ -192,5 +193,24 @@ module.exports = {
     res.data.data = { result: '注册成功！' };
     res.data.data.token = token;
     return res;
+  },
+  getOpenInfo: async (req) => {
+    const { code } = req.body;
+    const result = { status: 404, data: { code: -1 } };
+    if (!account || !wxId) {
+      result.data.code = 3001;
+      result.data.msg = '缺少code'
+      return result;
+    };
+    const openInfo = await baseUser.requestOpenInfo(code);
+    if (openInfo.code !== 1000) {
+      result.data.code = 3001;
+      result.data.msg = '获取openInfo 失败';
+      return result;
+    }
+    result.status = 200;
+    result.data.code = 1000;
+    result.data.data = openInfo.data;
+    return result;
   }
 } 

@@ -24,6 +24,9 @@
 <input type="textarea" id="note">
 <button onclick="addNewNote()">新建note</button>
 <div id="noteBox">
+<br>
+<input type="textarea" id="code">
+<button onclick="getInfoByCode()">获取code</button>
   
 </div>
 <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
@@ -84,6 +87,16 @@
   function addNewNote() {
     var title =  $('#note').val();
     $.post(baseUrl + "/notes/addNotes",{title},function(data,status){
+      if (data.code !== 1000) return;
+      console.log(data.data);
+      // $('#tUid').html(data.data.uid);
+      // $('#tName').html(data.data.username);
+    });
+  }
+  function getInfoByCode() {
+    var code =  $('#code').val();
+    $.post(baseUrl + "/user/getOpenInfo",{code},function(data,status){
+      console.log(data);
       if (data.code !== 1000) return;
       console.log(data.data);
       // $('#tUid').html(data.data.uid);

@@ -196,6 +196,7 @@ module.exports = {
   },
   getOpenInfo: async (req) => {
     const { code } = req.body;
+    console.log(req.body);
     const result = { status: 404, data: { code: -1 } };
     if (!code) {
       result.data.code = 3001;

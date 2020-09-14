@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试接口</title>
+</head>
+<body>
+<h5>当前用户name：<span id="name"></span></h5>
+<h5>当前用户uid：<span id="uid"></span></h5>
+<button onclick="addOne()">添加</button>
+<br>
+<input type="text" id="key">
+<button onclick="findOne()">绑定</button>
+<br>
+<button onclick="getUserInfo()">查找</button>
+<br>
+<button onclick="signIn()">登录</button>
+<br>
+<input type="text" id="targetUid">
+<p><span id="tUid"></span><span id="tName"></span></p>
+<button onclick="findUid()">UID查找</button>
+<br>
+<input type="textarea" id="note">
+<button onclick="addNewNote()">新建note</button>
+<div id="noteBox">
+  
+</div>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="../static/mockjs/dist/mock-min.js"></script>
+<script>
+  getUserInfo();
+  function addOne() {
+    var data = Mock.mock({
+      'username': '@cname',
+      'account|10': /[a-z][A-Z][0-9]/,
+      'wxId|10': /[a-z][A-Z][0-9]/,
+    })
+    $.post("/user/signUp",data,function(data,status){
+      console.log(data);
+      console.log(status);
+    });
+  }
+  var uid;
+  function findOne() {
+    var key =  $('#key').val();
+    $.post("/user/bind",{key, uid},function(data,status){
+      console.log(data);
+      console.log(status);
+      
+    });
+  }
+  function findUid() {
+    var uid =  $('#targetUid').val();
+    $.post("/user/getUserInfoByUid",{uid},function(data,status){
+      console.log(data);
+      console.log(status);
+      if (data.code !== 1000) return;
+      $('#tUid').html(data.data.uid);
+      $('#tName').html(data.data.username);
+    });
+  }
+  function getUserInfo() {
+    $.post("/user/getUserInfo",function(data,status){
+      console.log(data);
+      console.log(status);
+      if (data.code === 1000) {
+        $('#uid').html(data.data.uid);
+        $('#name').html(data.data.username);
+        uid = data.data.uid;
+      }
+    });
+  }
+  function signIn() {
+    $.post("/user/signIn",{ wxId: 'vI3iK6jO6uA0mC2hR1hQ7xP5iF5hX7' },function(data,status){
+      if (data.code === 1000) {
+        $('#uid').html(data.data.uid);
+        $('#name').html(data.data.username);
+        uid = data.data.uid;
+      }
+    });
+  }
+  function addNewNote() {
+    var title =  $('#note').val();
+    $.post("/notes/addNotes",{title},function(data,status){
+      if (data.code !== 1000) return;
+      console.log(data.data);
+      // $('#tUid').html(data.data.uid);
+      // $('#tName').html(data.data.username);
+    });
+  }
+</script>
+</body>
+</html>

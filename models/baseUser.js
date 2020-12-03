@@ -11,22 +11,22 @@ class BaseUser extends Base {
   }
   async getUserInfoByUid (uid) {
     const params = { uid };
-    const cols = 'uid, couple_key, username, account';
+    const cols = 'uid, couple_key, username, account, avatar, gender';
     return await this.getInfo(this.table, cols, params);
   }
   async getUserInfoByToken (token) {
     const params = { token };
-    const cols = 'uid, couple_key, username, avatar, account';
+    const cols = 'uid, couple_key, username, account, avatar, gender';
     return await this.getInfo(this.table, cols, params);
   }
   async getUserInfoByKey (key) {
     const params = { couple_key: key };
-    const cols = 'uid, couple_key, username, avatar, account';
+    const cols = 'uid, couple_key, username, account, avatar, gender';
     return await this.getInfo(this.table, cols, params);
   }
   async getUserInfoByWxId (wxId) {
     const params = { wx_id: wxId };
-    const cols = 'uid, couple_key, username, avatar, account';
+    const cols = 'uid, couple_key, username, account, avatar, gender';
     return await this.getInfo(this.table, cols, params);
   }
   async bindUserByKey (key, uid) {
@@ -34,9 +34,9 @@ class BaseUser extends Base {
     const params = { uid };
     return await this.updateInfo(this.table, items, params);
   }
-  async setTargetUid (from, to) {
-    const items = { target_uid: from };
-    const params = { uid: to };
+  async setTargetUid (uid, targetUid, coupleKey) {
+    const params = { uid };
+    const items = { target_uid: targetUid, couple_key: coupleKey };
     return await this.updateInfo(this.table, items, params);
   }
   async updateUserToken (uid, token) {

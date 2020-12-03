@@ -27,12 +27,16 @@
 <br>
 <input type="textarea" id="code">
 <button onclick="getInfoByCode()">获取code</button>
-  
+<br>
+<button onclick="getNotes()">获取notes</button>
+<ul id="notesList"></ul>
 </div>
 <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script src="../static/mockjs/dist/mock-min.js"></script>
 <script>
-  var baseUrl = 'https://www.moonlt.cn';
+  // var baseUrl = 'https://www.moonlt.cn';
+  // var baseUrl = 'http://192.168.199.160:80';
+  var baseUrl = 'http://localhost';
   getUserInfo();
   function addOne() {
     var data = Mock.mock({
@@ -51,7 +55,6 @@
     $.post("/user/bind",{key, uid},function(data,status){
       console.log(data);
       console.log(status);
-      
     });
   }
   function findUid() {
@@ -101,6 +104,18 @@
       console.log(data.data);
       // $('#tUid').html(data.data.uid);
       // $('#tName').html(data.data.username);
+    });
+  }
+  function getNotes() {
+    $.post(baseUrl + "/notes/getNotes",{},function(data,status){
+      if (data.code !== 1000) return;
+      console.log(data);
+      let list = '';
+      data.data.data.forEach(item => {
+        list += `<li>${item.title}</li>`
+      })
+      console.log(list);
+      $('#notesList').html(list);
     });
   }
 </script>

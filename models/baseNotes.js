@@ -30,8 +30,19 @@ class BaseNotes extends Base {
       skin: ''
     };
     const insertParams = Object.assign(params, p);
-    console.log(insertParams);
     return await this.insertInfo(this.table, insertParams);
+  }
+  async getNotes(params) {
+    const { type = '', page = 1, limit = 10, couple_key } = params;
+    const orderBy = { key: 'create_time', sort: 'DESC' };
+    const cols = '*';
+    return await this.getInfo(this.table, cols, { type, couple_key }, 'AND', orderBy, page, limit);
+  }
+  async updateStatus(id, is_finish) {
+    const params = { id };
+    const cTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    const items = { is_finish, finish_time: cTime };
+    return await this.updateInfo(this.table, items, params);
   }
 }
 

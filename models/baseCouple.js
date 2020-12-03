@@ -22,6 +22,21 @@ class BaseCouple extends Base {
     };
     return await this.insertInfo(this.table, params);
   }
+  async getCoupleInfo(key) {
+    const params = { couple_key: key }
+    const cols = '*';
+    return await this.getInfo(this.table, cols, params);
+  }
+  async updateCoupleInfo(code, params = {}) {
+    const rules = { couple_key: code };
+    const items = { };
+    Object.keys(params).forEach((key) => {
+      if (!!params[key]) {
+        items[key] = params[key];
+      }
+    })
+    return await this.updateInfo(this.table, items, rules);
+  }
 }
 
 module.exports = BaseCouple;

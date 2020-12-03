@@ -2,12 +2,19 @@
 const db = require('../utils/db');
 const jwt = require('jsonwebtoken');
 const request = require('request');
+const { tokenConfig } = require('../utils/config');
 const isInt = (str) => {
   if (!str) return false;
-  console.log(str + '----dasdadasdadasdadasdas')
   str = str + '';
   const req = /^[0-9]*$/;
   return str.match(req);
+}
+const deleteNull = (params) => {
+  const final = {};
+  Object.keys(params).forEach(key => {
+    if (isInt(params[key]) || params[key]) final[key] = params[key];
+  })
+  return final;
 }
 class Base {
   constructor() {
@@ -20,7 +27,7 @@ class Base {
       request(`https://api.weixin.qq.com/sns/jscode2session?appid=wx30ba2c0a7c24d48f&secret=0237042dce1141ff98bebcad08aaaa3c&js_code=${code}&grant_type=authorization_code`,
       function (error, response, body) {
         if (!error && response.statusCode == 200) {
-          console.log(body) // 请求成功的处理逻辑
+          // 请求成功的处理逻辑
           resolve({ code: 1000, data: body });
         }
         reject({ code: 3001})
@@ -29,21 +36,33 @@ class Base {
   }
   /**
    * @type default: 'AND'  |  'OR'
+   * @orderBy Object { key: required, sort: ASC }
+   * @page
+   * @limit
    */
-  async getInfo (table, cols = '*', params, type = 'AND') {
+  async getInfo (table, cols = '*', params, type = 'AND', orderBy, page, limit = 10) {
     if (!table || !cols || !this.isObject(params)) return this.getError();
     let paramsStr = '';
-    Object.keys(params).forEach((key, index) => {
+    const finalParams = deleteNull(params);
+    Object.keys(finalParams).forEach((key, index) => {
       if (index === 0) {
-        if (isInt(params[key])) paramsStr = `${key}=${params[key]}`;
-        else paramsStr = `${key}='${params[key]}'`;
+        if (isInt(finalParams[key])) paramsStr = `${key}=${finalParams[key]}`;
+        else paramsStr = `${key}='${finalParams[key]}'`;
       } else {
-        if (isInt(params[key])) paramsStr = `${type} ${key}=${params[key]}`;
-        else paramsStr = `${type} ${key}='${params[key]}'`;
+        if (isInt(finalParams[key])) paramsStr = `${type} ${key}=${finalParams[key]}`;
+        else paramsStr = `${type} ${key}='${finalParams[key]}'`;
       }
     })
-    const getSql = `SELECT ${cols} FROM ${table} WHERE ${paramsStr}`;
-    console.log(getSql);
+    let getSql = `SELECT ${cols} FROM ${table}`;
+    if (paramsStr) { // 搜索
+      getSql = `${getSql} WHERE ${paramsStr}`;
+    }
+    if (orderBy) { // 排序
+      getSql = `${getSql} ORDER BY ${orderBy.key} ${orderBy.sort}`;
+    }
+    if (page) { // 分页
+      getSql = `${getSql} LIMIT ${(page - 1) * limit},${limit};`;
+    }
     return await db.queryAsync(getSql);
   }
   async updateInfo(table, items, params, type = 'AND') {
@@ -65,11 +84,15 @@ class Base {
         else paramsStr = `${type} ${key}='${params[key]}'`;
       }
     })
-    Object.keys(items).forEach((key) => {
-      setStr = `${key} = ?`;
+    Object.keys(items).forEach((key, index) => {
+      if (index === 0) {
+        setStr = `${key} = ?`;
+      } else {
+        setStr = `${setStr},${key} = ?`;
+      }
       setArr.push(items[key]);
     })
-    const updateSql = `UPDATE user SET ${setStr} WHERE ${paramsStr}`;
+    const updateSql = `UPDATE ${table} SET ${setStr} WHERE ${paramsStr}`;
     return await db.queryAsync(updateSql, setArr);
   }
   async insertInfo(table, params) {

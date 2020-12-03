@@ -22,6 +22,16 @@ const getToken = (params, time) => {
 });
 }
 
+const getTokenFromReq = (req) => {
+  let token = '';
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  } else if (req.headers && req.headers.token) {
+    token = req.headers.token;
+  } else { token = '' };
+  return token;
+}
+
 // const routeCreator = (router, route, callback, method = 'post') => {
 //   router[method](route, urlencodedParser, async (req, res) => {
 //     const data = await callback(req, res);
@@ -33,4 +43,5 @@ const getToken = (params, time) => {
 module.exports = {
   getToken,
   decodeToken,
+  getTokenFromReq,
 }

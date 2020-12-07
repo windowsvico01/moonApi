@@ -16,7 +16,7 @@ class BaseNotes extends Base {
     const params = {
       id: { noSet: true },
       couple_key: '',
-      type: 1, // 1: 留言
+      type: 1, // 1: 留言 2: 心愿
       author_uid: '',
       author_avatar: '',
       create_time: cTime,

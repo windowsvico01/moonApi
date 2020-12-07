@@ -18,6 +18,7 @@ module.exports = {
       return result;
     }
     const insertParams = {
+      type,
       author_uid: uid,
       couple_key,
       author_name: username,

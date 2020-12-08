@@ -12,6 +12,7 @@ const GET_USER_INFO = '/getUserInfo'; // 获取用户信息
 const GET_USER_INFO_BY_UID = '/getUserInfoByUid'; // 通过UID获取用户信息
 const GET_USER_INFO_BY_WX_ID = '/getUserInfoByWxId'; // 通过wxId获取用户信息
 const GET_OPEN_INFO = '/getOpenInfo'; // 获取微信用户信息
+const UPDATE_USER_INFO = '/updateUserInfo'; // 编辑用户信息
 const GET_COUPLE_INFO = '/getCoupleInfo'; // 获取couple信息
 const EDIT_COUPLE_INFO = '/editCoupleInfo'; // 修改couple信息
 
@@ -29,7 +30,8 @@ routeCreator(SIGN_IN, User.signIn);
 routeCreator(SIGN_UP, User.signUp);
 routeCreator(GET_OPEN_INFO, User.getOpenInfo);
 routeCreator(GET_USER_INFO_BY_WX_ID, User.getUserInfoByWxId);
-routeCreator(GET_COUPLE_INFO, Couple.getCoupleInfo)
-routeCreator(EDIT_COUPLE_INFO, Couple.editCoupleInfo)
+routeCreator(UPDATE_USER_INFO, User.updateUserInfo);
+routeCreator(GET_COUPLE_INFO, Couple.getCoupleInfo);
+routeCreator(EDIT_COUPLE_INFO, Couple.editCoupleInfo);
 
 module.exports = router;

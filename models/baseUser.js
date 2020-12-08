@@ -44,6 +44,11 @@ class BaseUser extends Base {
     const params = { uid };
     return await this.updateInfo(this.table, items, params);
   }
+  async updateUserInfo (uid, obj) {
+    const params = { uid };
+    const items = obj;
+    return await this.updateInfo(this.table, items, params);
+  }
   async insertUser(insertParams) {
     const params = {
       uid: { noSet: true },

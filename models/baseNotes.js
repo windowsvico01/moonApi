@@ -20,6 +20,7 @@ class BaseNotes extends Base {
       author_uid: '',
       author_avatar: '',
       create_time: cTime,
+      finish_time: cTime,
       // create_time: cTimer,
       is_finish: '',
       // finish_time: '',

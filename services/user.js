@@ -140,6 +140,37 @@ module.exports = {
     }
     return res;
   },
+  updateUserInfo: async (req) => {
+    const token = getTokenFromReq(req);
+    const res = { status: 404, data: { code: -1 } };
+    const { username, avatar, gender } = req.body;
+    if (!username || !gender) {
+      res.data.code = 3001;
+      res.data.msg = '参数缺失'
+      return res;
+    }
+    let uid = '';
+    const data = await baseUser.getUserInfoByToken(token);
+    if (data.code == 1000 && data.data.length > 0) {
+      uid = data.data[0].uid;
+    } else {
+      res.data.code = 3001;
+      res.data.msg = '未获取到此token的用户，请重新登录';
+      return res;
+    }
+    const params = { gender, username };
+    if (avatar) params.avatar = avatar;
+    const updateRes = await baseUser.updateUserInfo(uid, params);
+    if (updateRes.code !== 1000) {
+      res.data.code = 3001;
+      res.data.msg = '修改失败';
+      return res;
+    }
+    res.status = 200;
+    res.data.code = 1000;
+    res.data.msg = '修改成功';
+    return res; 
+  },
   signIn: async (req, resolve) => {
     const { wxId } = req.body;
     const res = { status: 404, data: { code: -1 } };

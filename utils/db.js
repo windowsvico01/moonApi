@@ -25,7 +25,6 @@ db.queryAsync = (sqlStr, sqlParams) => new Promise((resolve, reject) => {
   const connection = db.connect();
   connection.query(sqlStr, sqlParams, (err, res) => {
     if (err) {
-      console.log(err);
       reject({ code: 3002, err })
       return
     }
@@ -37,6 +36,9 @@ db.queryAsync = (sqlStr, sqlParams) => new Promise((resolve, reject) => {
       }
     })
   })
+}).catch((e) => {
+  console.log(e)
+  // reject({ code: 3001})
 })
 
 module.exports = db;

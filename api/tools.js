@@ -14,6 +14,7 @@ router.post(UPLOAD_IMAGE, (req, res) => {
     Region: 'ap-beijing',    /* 必须 */
     Key: req.files.file.originalFilename,              /* 必须 */
     StorageClass: 'STANDARD',
+    ProgressInterval: 500,
     Body: fs.createReadStream(req.files.file.path), // 上传文件对象
     onProgress: function(progressData) {
         console.log(JSON.stringify(progressData));
@@ -25,6 +26,8 @@ router.post(UPLOAD_IMAGE, (req, res) => {
         'url': `http://${data.Location}`,
         'msg': '图片上传成功',
       });
+    } else {
+      console.log(err);
     }
 });
 })

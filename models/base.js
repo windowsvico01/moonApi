@@ -32,6 +32,8 @@ class Base {
         }
         reject({ code: 3001})
       });
+    }).catch(() => {
+      reject({ code: 3001})
     })
   }
   /**
@@ -49,8 +51,8 @@ class Base {
         if (isInt(finalParams[key])) paramsStr = `${key}=${finalParams[key]}`;
         else paramsStr = `${key}='${finalParams[key]}'`;
       } else {
-        if (isInt(finalParams[key])) paramsStr = `${type} ${key}=${finalParams[key]}`;
-        else paramsStr = `${type} ${key}='${finalParams[key]}'`;
+        if (isInt(finalParams[key])) paramsStr += ` ${type} ${key}=${finalParams[key]}`;
+        else paramsStr += ` ${type} ${key}='${finalParams[key]}'`;
       }
     })
     let getSql = `SELECT ${cols} FROM ${table}`;
@@ -126,6 +128,8 @@ class Base {
           resolve(res)
         }
       })
+    }).catch(() => {
+      reject({ code: 3001})
     })
   }
   getToken(params, time)  {

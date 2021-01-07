@@ -8,7 +8,9 @@ const multipart = require('connect-multiparty');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const user = require('./api/user.js');
 const notes = require('./api/notes.js');
+const festival = require('./api/festival.js');
 const tools = require('./api/tools.js');
+const accounts = require('./api/account.js');
 const https = require("https");
 const fs = require("fs");
 const env = process.argv[2] || 'dev';
@@ -30,6 +32,8 @@ app.use(multipart());
 app.use('/user', user);
 app.use('/notes', notes);
 app.use('/tools', tools);
+app.use('/accounts', accounts);
+app.use('/festival', festival);
 
 server.setTimeout(10*1000);
 server.listen(80, () => {

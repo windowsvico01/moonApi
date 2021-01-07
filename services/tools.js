@@ -59,7 +59,7 @@ const upload = (req) => new Promise((resolve, rejects) => {
 }).catch((e) => {  
   const data = {
     'code': 3001,
-    'msg': '图片上传成功',
+    'msg': '图片上传失败',
   };
   reject(data);
 });

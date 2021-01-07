@@ -31,6 +31,11 @@
 <button onclick="getNotes()">获取notes</button>
 <ul id="notesList"></ul>
 </div>
+<br>
+<div>
+  <input type="text" id="amount">
+  <button onclick="addRecord()">添加一笔</button>
+</div>
 <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script src="../static/mockjs/dist/mock-min.js"></script>
 <script>
@@ -116,6 +121,19 @@
       })
       console.log(list);
       $('#notesList').html(list);
+    });
+  }
+  function addRecord() {
+    var uid =  $('#amount').val();
+    const params = {
+
+    };
+    $.post(baseUrl + "/account/addRecord",params,function(data,status){
+      console.log(data);
+      console.log(status);
+      if (data.code !== 1000) return;
+      $('#tUid').html(data.data.uid);
+      $('#tName').html(data.data.username);
     });
   }
 </script>

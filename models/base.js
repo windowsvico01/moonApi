@@ -36,6 +36,7 @@ class Base {
       });
     }).catch(() => {
       console.log(e);
+      return Promise.reject({code: 3001});
       // return { code: 3001}
     })
   }
@@ -133,6 +134,7 @@ class Base {
       })
     }).catch((e) => {
       console.log(e);
+      return Promise.reject({code: 3001});
       // return {code: 3001}
       // reject({ code: 3001})
     })

@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 const Base = require('./base');
 const moment = require('moment');
+const { to } = require('../utils/tools');
 
 class BaseCouple extends Base {
   constructor() {
@@ -20,7 +21,7 @@ class BaseCouple extends Base {
       sign_words: '',
       members
     };
-    return await this.insertInfo(this.table, params);
+    return await to(this.insertInfo(this.table, params));
   }
   async getCoupleInfo(key) {
     const params = { couple_key: key }
@@ -35,7 +36,7 @@ class BaseCouple extends Base {
         items[key] = params[key];
       }
     })
-    return await this.updateInfo(this.table, items, rules);
+    return await to(this.updateInfo(this.table, items, rules));
   }
 }
 

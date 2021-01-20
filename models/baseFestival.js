@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 const Base = require('./base');
 const moment = require('moment');
+const { to } = require('../utils/tools');
 
 class BaseFestival extends Base {
   constructor() {
@@ -27,7 +28,7 @@ class BaseFestival extends Base {
       bk_image: ''
     };
     const insertParams = Object.assign(params, tParams);
-    return await this.insertInfo(this.table, insertParams);
+    return await to(this.insertInfo(this.table, insertParams));
   }
   async getLunarFestival(params) {
     const { couple_key, date_lunar } = params;
@@ -39,23 +40,23 @@ class BaseFestival extends Base {
     const { couple_key, date_solar } = params;
     const orderBy = { key: 'create_time', sort: 'DESC' };
     const cols = '*';
-    return await this.getInfo(this.table, cols, { couple_key, date_solar }, 'AND', orderBy);
+    return await to(this.getInfo(this.table, cols, { couple_key, date_solar }, 'AND', orderBy));
   }
   async getFestival(params) {
     const { id } = params;
     const cols = '*';
-    return await this.getInfo(this.table, cols, { id });
+    return await to(this.getInfo(this.table, cols, { id }));
   }
   async getFestivalList(params) {
     const { couple_key } = params;
     const cols = '*';
-    return await this.getInfo(this.table, cols, { couple_key });
+    return await to(this.getInfo(this.table, cols, { couple_key }));
   }
   async updateFestival(id, receive_uid) {
     const params = { id };
     const cTime = moment().format('YYYY-MM-DD');
     const items = { receive_uid, receive_time: cTime };
-    return await this.updateInfo(this.table, items, params);
+    return await to(this.updateInfo(this.table, items, params));
   }
 }
 

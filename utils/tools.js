@@ -32,6 +32,14 @@ const getTokenFromReq = (req) => {
   return token;
 }
 
+const to = (promise) => {
+  return promise
+      .then(data => {
+          return [null, data];
+      })
+      .catch(err => [err]);
+}
+
 // const routeCreator = (router, route, callback, method = 'post') => {
 //   router[method](route, urlencodedParser, async (req, res) => {
 //     const data = await callback(req, res);
@@ -44,4 +52,5 @@ module.exports = {
   getToken,
   decodeToken,
   getTokenFromReq,
+  to,
 }

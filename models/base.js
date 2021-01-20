@@ -35,7 +35,8 @@ class Base {
         reject({ code: 3001})
       });
     }).catch(() => {
-      reject({ code: 3001})
+      console.log(e);
+      return { code: 3001}
     })
   }
   /**
@@ -130,8 +131,10 @@ class Base {
           resolve(res)
         }
       })
-    }).catch(() => {
-      reject({ code: 3001})
+    }).catch((e) => {
+      console.log(e);
+      return {code: 3001}
+      // reject({ code: 3001})
     })
   }
   getToken(params, time)  {

@@ -39,7 +39,8 @@ db.queryAsync = (sqlStr, sqlParams) => new Promise((resolve, reject) => {
   })
 }).catch((e) => {
   console.log(e)
-  return Promise.reject({code: 3001});
+  next(e);
+  // return Promise.reject({code: 3001});
   // return { code: 3001, msg: '获取信息失败'}
 })
 

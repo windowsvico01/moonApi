@@ -5,7 +5,9 @@ const baseNotes = new BaseNotes();
 const User = require('./user');
 const moment = require('moment');
 const Lunar = require('../utils/lunar');
-
+function PrefixInteger(num, length) {
+  return (Array(length).join('0') + num).slice(-length);
+}
 module.exports = {
   addFestival: async (req, res) => {
     const UserInfo = await User.getUserInfo(req);
@@ -56,8 +58,8 @@ module.exports = {
     const curTime = moment().format('YYYY-MM-DD');
     const timeArr = curTime.split('-');
     const lunarObj = Lunar.solar2lunar(timeArr[0], timeArr[1], timeArr[2]);
-    const dateSolar = `${timeArr[1]}-${timeArr[2]}`; // 阳历 月日
-    const dateLunar = `${lunarObj.lMonth}-${lunarObj.lDay}`; // 阴历 月日
+    const dateSolar = `${PrefixInteger(timeArr[1], 2)}-${PrefixInteger(timeArr[2], 2)}`; // 阳历 月日
+    const dateLunar = `${PrefixInteger(lunarObj.lMonth, 2)}-${PrefixInteger(lunarObj.lDay, 2)}`; // 阴历 月日
     const listLunar = await baseFestival.getLunarFestival({couple_key, date_lunar: dateLunar});
     const listSolar = await baseFestival.getSolarFestival({couple_key, date_solar: dateSolar});
     if (listLunar.code !== 1000 || listSolar.code !== 1000) {

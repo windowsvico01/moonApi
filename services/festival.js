@@ -5,12 +5,14 @@ const baseNotes = new BaseNotes();
 const User = require('./user');
 const moment = require('moment');
 const Lunar = require('../utils/lunar');
+const { to } = require('../utils/tools');
+
 function PrefixInteger(num, length) {
   return (Array(length).join('0') + num).slice(-length);
 }
 module.exports = {
   addFestival: async (req, res) => {
-    const UserInfo = await User.getUserInfo(req);
+    const UserInfo = await to(User.getUserInfo(req));
     const result = { status: 404, data: { code: -1 } };
     if (UserInfo.status !== 200) {
       result.data.code = 1003;
@@ -35,7 +37,7 @@ module.exports = {
       date_lunar,
       cus_style
     }
-    const insertRes = await baseFestival.insertNewFestival(insertParams);
+    const insertRes = await to(baseFestival.insertNewFestival(insertParams));
     if (insertRes.code !== 1000) {
       result.data.code = 3001;
       result.data.msg = '新建失败';
@@ -47,7 +49,7 @@ module.exports = {
     return result;
   },
   getTodayFestival: async (req, res) => {
-    const UserInfo = await User.getUserInfo(req);
+    const UserInfo = await to(User.getUserInfo(req));
     const result = { status: 404, data: { code: -1 } };
     if (UserInfo.status !== 200) {
       result.data.code = 1003;
@@ -60,8 +62,8 @@ module.exports = {
     const lunarObj = Lunar.solar2lunar(timeArr[0], timeArr[1], timeArr[2]);
     const dateSolar = `${PrefixInteger(timeArr[1], 2)}-${PrefixInteger(timeArr[2], 2)}`; // 阳历 月日
     const dateLunar = `${PrefixInteger(lunarObj.lMonth, 2)}-${PrefixInteger(lunarObj.lDay, 2)}`; // 阴历 月日
-    const listLunar = await baseFestival.getLunarFestival({couple_key, date_lunar: dateLunar});
-    const listSolar = await baseFestival.getSolarFestival({couple_key, date_solar: dateSolar});
+    const listLunar = await to(baseFestival.getLunarFestival({couple_key, date_lunar: dateLunar}));
+    const listSolar = await to(baseFestival.getSolarFestival({couple_key, date_solar: dateSolar}));
     if (listLunar.code !== 1000 || listSolar.code !== 1000) {
       result.data.code = 3001;
       result.data.msg = '查询失败';
@@ -82,7 +84,7 @@ module.exports = {
       result.data.msg = 'id参数缺失';
       return result;
     }
-    const fesRes = await baseFestival.getFestival({id});
+    const fesRes = await to(baseFestival.getFestival({id}));
     if (fesRes.code !== 1000) {
       result.data.code = 3001;
       result.data.msg = '获取失败';
@@ -94,7 +96,7 @@ module.exports = {
     return result;
   },
   getFestivalList: async (req, res) => {
-    const UserInfo = await User.getUserInfo(req);
+    const UserInfo = await to(User.getUserInfo(req));
     const result = { status: 404, data: { code: -1 } };
     if (UserInfo.status !== 200) {
       result.data.code = 1003;
@@ -102,7 +104,7 @@ module.exports = {
       return result;
     }
     const { couple_key } = UserInfo.data.data;
-    const fesRes = await baseFestival.getFestivalList({couple_key});
+    const fesRes = await to(baseFestival.getFestivalList({couple_key}));
     if (fesRes.code !== 1000) {
       result.data.code = 3001;
       result.data.msg = '获取失败';
@@ -114,7 +116,7 @@ module.exports = {
     return result;
   },
   updateFesStatus: async (req, res) => {
-    const UserInfo = await User.getUserInfo(req);
+    const UserInfo = await to(User.getUserInfo(req));
     const result = { status: 404, data: { code: -1 } };
     if (UserInfo.status !== 200) {
       result.data.code = 1003;
@@ -128,7 +130,7 @@ module.exports = {
       result.data.msg = '参数缺失';
       return result;
     };
-    const fesRes = await baseFestival.getFestival({id}); // 获取节日信息
+    const fesRes = await to(baseFestival.getFestival({id})); // 获取节日信息
     if (fesRes.code !== 1000) {
       result.data.code = 3001;
       result.data.msg = '获取失败';
@@ -137,7 +139,7 @@ module.exports = {
     const { create_uid, receive_time } = fesRes.data[0];
     const currentTime = moment().format('YYYY-MM-DD');
     if ( receive_time !== currentTime && create_uid*1 !== uid*1 ) { // 接收人触发，并且当天未触发过需要添加消息
-      const updateFesRes = await baseFestival.updateFestival(id, uid, currentTime);
+      const updateFesRes = await to(baseFestival.updateFestival(id, uid, currentTime));
       if (updateFesRes.code !== 1000) { // 更新成功，添加消息
         result.data.code = 3001;
         result.data.msg = '更新状态失败';
@@ -153,7 +155,7 @@ module.exports = {
         cover: bk_image,
         skin: cus_style,
       }
-      const insertRes = await baseNotes.insertNewNote(insertParams);
+      const insertRes = await to(baseNotes.insertNewNote(insertParams));
       if (insertRes.code !== 1000) {
         result.data.code = 3001;
         result.data.msg = '新建失败';

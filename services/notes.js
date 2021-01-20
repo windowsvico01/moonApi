@@ -1,9 +1,11 @@
 const BaseNotes = require('../models/baseNotes');
 const baseNotes = new BaseNotes();
 const User = require('./user');
+const { to } = require('../utils/tools');
+
 module.exports = {
   addNotes: async (req, res) => {
-    const UserInfo = await User.getUserInfo(req);
+    const UserInfo = to(await User.getUserInfo(req));
     const result = { status: 404, data: { code: -1 } }
     if (UserInfo.status !== 200) {
       result.data.code = 1003;
@@ -29,7 +31,7 @@ module.exports = {
       cover,
       skin,
     }
-    const insertRes = await baseNotes.insertNewNote(insertParams);
+    const insertRes = await to(baseNotes.insertNewNote(insertParams));
     if (insertRes.code !== 1000) {
       result.data.code = 3001;
       result.data.msg = '新建失败';
@@ -41,7 +43,7 @@ module.exports = {
     return result;
   },
   getNotes: async (req, res) => {
-    const UserInfo = await User.getUserInfo(req);
+    const UserInfo = await to(User.getUserInfo(req));
     const result = { status: 404, data: { code: -1 } }
     if (UserInfo.status !== 200) {
       result.data.code = 1003;
@@ -57,7 +59,7 @@ module.exports = {
     }
     if (type || type !== '') searchParams.type = type;
     // const listRes = 
-    const listRes = await baseNotes.getNotes(searchParams);
+    const listRes = await to(baseNotes.getNotes(searchParams));
     if (listRes.code !== 1000) {
       result.data.code = 3001;
       result.data.msg = '查询失败';
@@ -68,7 +70,7 @@ module.exports = {
     return result;
   },
   updateNoteStatus: async (req, res) => {
-    const UserInfo = await User.getUserInfo(req);
+    const UserInfo = await to(User.getUserInfo(req));
     const result = { status: 404, data: { code: -1 } };
     if (UserInfo.status !== 200) {
       result.data.code = 1003;
@@ -81,7 +83,7 @@ module.exports = {
       result.data.msg = '参数缺失';
       return result;
     };
-    const updateRes = await baseNotes.updateStatus(id, is_finish);
+    const updateRes = await to(baseNotes.updateStatus(id, is_finish));
     if (updateRes.code === 1000) {
       result.status = 200;
       result.data.code = 1000;

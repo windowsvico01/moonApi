@@ -1,5 +1,7 @@
 const COS = require('cos-nodejs-sdk-v5');
 const fs = require('fs');
+const { to } = require('../utils/tools');
+
 
 /**
  * 获取临时秘钥
@@ -66,7 +68,7 @@ const upload = (req) => new Promise((resolve, rejects) => {
 module.exports = {
   uploadImage: async (req, res) => {
     const result = { status: 404, data: { code: -1 } };
-    const uploadRes = await upload(req);
+    const uploadRes = await to(upload(req));
     if (uploadRes.code === 1000) {
       result.status = 200;
       result.data = uploadRes;

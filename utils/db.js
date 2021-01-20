@@ -21,6 +21,7 @@ db.query = (sqlStr, sqlParams, cb) => {
   })
 }
 db.queryAsync = (sqlStr, sqlParams) => new Promise((resolve, reject) => {
+  console.log(sqlStr);
   if (!sqlStr) reject({ code: '3001' });
   const connection = db.connect();
   connection.query(sqlStr, sqlParams, (err, res) => {
@@ -38,7 +39,7 @@ db.queryAsync = (sqlStr, sqlParams) => new Promise((resolve, reject) => {
   })
 }).catch((e) => {
   console.log(e)
-  // reject({ code: 3001})
+  reject({ code: 3001, msg: '获取信息失败'})
 })
 
 module.exports = db;

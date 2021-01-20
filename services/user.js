@@ -180,6 +180,7 @@ module.exports = {
       return res;
     }
     const userInfo = await baseUser.getUserInfoByWxId(wxId);
+    console.log(userInfo);
     if (userInfo.code !== 1000) {
       res.data = { code: 3001, msg: '登录失败' };
       return res;

@@ -35,9 +35,9 @@ const getTokenFromReq = (req) => {
 const to = (promise) => {
   return promise
       .then(data => {
-          return [null, data];
+          return data;
       })
-      .catch(err => [err]);
+      .catch(err => err);
 }
 
 // const routeCreator = (router, route, callback, method = 'post') => {

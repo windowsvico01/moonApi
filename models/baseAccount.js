@@ -1,7 +1,6 @@
 const db = require('../utils/db');
 const Base = require('./base');
 const moment = require('moment');
-const { to } = require('../utils/tools');
 
 class BaseAccount extends Base {
   constructor() {
@@ -30,7 +29,7 @@ class BaseAccount extends Base {
       degree: 1
     };
     const insertParams = Object.assign(params, tParams);
-    return await to(this.insertInfo(this.table, insertParams));
+    return await this.insertInfo(this.table, insertParams);
   }
   async getRecords(params) {
     const { type, couple_key, uid,  create_time } = params;
@@ -40,7 +39,7 @@ class BaseAccount extends Base {
     if (uid) tParams.uid = uid;
     const orderBy = { key: 'create_time', sort: 'DESC' };
     const cols = '*';
-    return await to(this.getInfo(this.table, cols, tParams, 'AND', orderBy, 1, 99));
+    return await this.getInfo(this.table, cols, tParams, 'AND', orderBy, 1, 99);
   }
   // async updateStatus(id, is_finish) {
   //   const params = { id };

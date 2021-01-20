@@ -34,11 +34,6 @@ class Base {
         }
         reject({ code: 3001})
       });
-    }).catch(() => {
-      console.log(e);
-      next(e);
-      // return Promise.reject({code: 3001});
-      // return { code: 3001}
     })
   }
   /**
@@ -133,12 +128,6 @@ class Base {
           resolve(res)
         }
       })
-    }).catch((e) => {
-      console.log(e);
-      next(e);
-      // return Promise.reject({code: 3001});
-      // return {code: 3001}
-      // reject({ code: 3001})
     })
   }
   getToken(params, time)  {

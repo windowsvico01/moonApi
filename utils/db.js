@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 const db = {};
 const env = process.argv[2] || 'dev';
+const log4js = require('./logger');
+const logger = log4js.getLogger();
 const { mysqlConfig: { baseConfig, proConfig, devConfig } } = require('./config');
 db.connect = () => mysql.createConnection(Object.assign(baseConfig, env === 'product' ? proConfig : devConfig));
 db.query = (sqlStr, sqlParams, cb) => {
@@ -8,7 +10,7 @@ db.query = (sqlStr, sqlParams, cb) => {
   const connection = db.connect();
   connection.query(sqlStr, sqlParams, (err, res) => {
     if (err) {
-      console.log(err);
+      logger.warn(JSON.stringify(err));
       return
     }
     cb(err, res);
@@ -21,7 +23,7 @@ db.query = (sqlStr, sqlParams, cb) => {
   })
 }
 db.queryAsync = (sqlStr, sqlParams) => new Promise((resolve, reject) => {
-  console.log(sqlStr);
+  logger.info(sqlStr);
   if (!sqlStr) reject({ code: '3001' });
   const connection = db.connect();
   connection.query(sqlStr, sqlParams, (err, res) => {

@@ -14,6 +14,7 @@ const accounts = require('./api/account.js');
 const https = require("https");
 const fs = require("fs");
 const env = process.argv[2] || 'dev';
+require('express-async-errors');
 
 
 app.use(cors({

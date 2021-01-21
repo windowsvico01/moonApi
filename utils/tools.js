@@ -32,22 +32,13 @@ const getTokenFromReq = (req) => {
   return token;
 }
 
-const to = (promise) => {
-  return promise
-      .then(data => {
-          return data;
-      })
-      .catch(err => err);
-}
-
+const to = (promise) => promise;
 // const routeCreator = (router, route, callback, method = 'post') => {
 //   router[method](route, urlencodedParser, async (req, res) => {
 //     const data = await callback(req, res);
 //     res.status(data.status).send(data.data);
 //   })
 // }
-
-
 module.exports = {
   getToken,
   decodeToken,

@@ -17,7 +17,7 @@ module.exports = {
   },
   tokenConfig: {
     key: '104yangpu',
-    expires: 5, // token默认过期时间
+    expires: 1000000, // token默认过期时间
   },
   errMsg: {
     code: 3001,
